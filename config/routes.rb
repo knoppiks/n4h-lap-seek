@@ -464,7 +464,7 @@ SEEK::Application.routes.draw do
         post :create_from_existing
       end
     end
-    resources :people, :programmes, :projects, :investigations, :assays, :samples, :studies, :publications, :events, :collections, only: [:index]
+    resources :people, :programmes, :projects, :investigations, :assays, :samples, :studies, :publications, :events, :collections, :human_diseases, only: [:index]
   end
 
   resources :presentations, concerns: [:has_content_blobs, :publishable, :has_versions, :asset] do
@@ -561,7 +561,7 @@ SEEK::Application.routes.draw do
       post :update_metadata
       post :request_contact
     end
-    resources :people, :programmes, :projects, :investigations, :assays, :studies, :models, :data_files, :documents, :presentations, :organisms, :events, :collections, only: [:index]
+    resources :people, :programmes, :projects, :investigations, :assays, :studies, :models, :data_files, :documents, :presentations, :organisms, :human_diseases, :events, :collections, only: [:index]
   end
 
   resources :events, concerns: [:asset] do
@@ -598,7 +598,7 @@ SEEK::Application.routes.draw do
     collection do
       post :search_ajax
     end
-    resources :projects, :programmes, :assays, :studies, :models, :publications, only: [:index]
+    resources :projects, :programmes, :assays, :studies, :models, :publications, :data_files, only: [:index]
     member do
       get :visualise
       get :tree
