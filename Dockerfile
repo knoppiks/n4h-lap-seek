@@ -36,7 +36,7 @@ RUN bundle config --local frozen 1 && \
 
 # App code
 COPY . .
-RUN mkdir log tmp
+RUN mkdir -p log tmp
 COPY docker/virtuoso_settings.docker.yml config/virtuoso_settings.yml
 
 USER root
@@ -48,7 +48,7 @@ RUN touch config/using-docker #allows us to see within SEEK we are running in a 
 RUN pip3 install -r requirements.txt
 
 # SQLite Database (for asset compilation)
-RUN mkdir sqlite3-db && \
+RUN mkdir -p sqlite3-db && \
     cp docker/database.docker.sqlite3.yml config/database.yml && \
     chmod +x docker/upgrade.sh docker/start_workers.sh && \
     bundle exec rake db:setup
