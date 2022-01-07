@@ -5,13 +5,22 @@
 <% end %>
 
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-12">
+    <% if Seek::Config.overview_block_enabled -%>
+      <% cache 'lha_content_block', expires_in: 12.hours, skip_digest: true do -%>
+        <%= render :partial => 'lha/content_block' %>
+      <% end -%>
+    <% end -%>
     <%= render :partial=>"home_description_box" -%>
 
     <% if Seek::Config.front_page_buttons_enabled %>
         <%= render :partial=>"home_buttons" -%>
     <% end %>
+  </div>
+</div>
 
+<div class="row">
+  <div class="col-md-9">
     <% if logged_in_and_registered? %>
         <%= render :partial=>"user_activity" -%>
     <% else %>

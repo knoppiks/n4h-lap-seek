@@ -191,6 +191,7 @@ results_per_page_default_condensed:
   convert: :to_i
 results_per_page:
 cwl_viewer_url:
+overview_block_enabled:
 # Types enabled
 documents_enabled:
 events_enabled:

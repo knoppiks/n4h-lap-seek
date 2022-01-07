@@ -1,0 +1,59 @@
+<div id="lha-content-block" class="container-fluid bg-3 text-center">
+	<div class="row">
+		<div class="col-sm-3">
+			<%= link_to :projects, class: 'unstyled', 'data-tooltip': 'Browse Projects' do %>
+				<%= image(:project, alt: 'Projects') %>
+				<h3>
+					Scientific Projects
+					<span class="badge badge-info"><%= Project.count -%></span>
+				</h3>
+				<p>
+					Involved <b>study groups</b>, <b> competence networks</b> and <b>epidemiological and clinical trials</b> are listed here,
+					as well as completed ones, of which research results are conserved. All of these entities are called "projects" within the <%= Seek::Config.application_name %>.
+				</p>
+			<% end %>
+		</div>
+
+		<div class="col-sm-3">
+			<%= link_to :publications, class: 'unstyled', 'data-tooltip': 'Browse Publications' do %>
+				<%= image(:publication, alt: 'Publications') %>
+				<h3>
+					Publications
+					<span class="badge badge-info"><%= Publication.count %></span>
+				</h3>
+				<p>
+					Publications resulting from the provided data and models of scientific projects are listed here.
+					Publications are the <b>central component of the <%= Seek::Config.application_name %></b> and all related entities are accessible from there.
+				</p>
+			<% end %>
+		</div>
+
+		<div class="col-sm-3">
+			<%= link_to :models, class: 'unstyled', 'data-tooltip': 'Browse Models' do %>
+				<%= image(:model, alt: 'Models') %>
+				<h3>
+					Models
+					<span class="badge badge-info"><%= Model.count %></span>
+				</h3>
+				<p>
+					<b>Algorithm-based predictions</b>, <b>simulation models</b>, <b>geo data</b> and <b>phenotype definitions</b>
+					are gathered within the <%= Seek::Config.application_name %> and available as download or interactive webapplication for research purposes.
+				<p>
+			<% end %>
+		</div>
+
+		<div class="col-sm-3">
+			<%= link_to :data_files, class: 'unstyled', 'data-tooltip': 'Browse Data Files' do %>
+				<%= image(:data_file, alt: 'Data Files') %>
+				<h3>
+					Data Files
+					<span class="badge badge-info"><%= DataFile.count %></span>
+				</h3>
+				<p>
+					<%= Seek::Config.application_name %> contains constantly growing amount of datasets from different areas of medicine.
+					The datasets are divided in <b>clinical</b>, <b>OMIC</b> and <b>SOM</b> data based on their origin.
+				</p>
+			<% end %>
+		</div>
+	</div>
+</div>
