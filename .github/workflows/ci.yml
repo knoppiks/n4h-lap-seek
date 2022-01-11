@@ -1,6 +1,10 @@
-name: Run Tests
-on: [push, pull_request]
+name: CI
 
+on:
+  pull_request: { branches: [ "main" ] }
+  push:
+    branches: [ "main" ]
+    tags: [ "*" ]
 jobs:
   tests:
     name: Test
@@ -111,3 +115,46 @@ jobs:
         run: cp test/config/virtuoso_test_settings.yml config/virtuoso_settings.yml
       - name: Run tests
         run: bundle exec ${{ matrix.suite }}
+
+  build-pr:
+    needs: [ "tests" ]
+    name: "PR"
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker/build-push-action@v2.7.0
+
+  build-main:
+    needs: [ "tests" ]
+    name: "main"
+    if: github.event_name == 'push' && contains(github.ref, '/heads/main')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v2.7.0
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+
+  build-tag:
+    needs: [ "tests" ]
+    name: "tag"
+    if: github.event_name == 'push' && contains(github.ref, '/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - id: generate-version
+        env: { github_ref: "${{github.ref_name }}" }
+        run: echo "::set-output name=ver::$(echo $github_ref | cut -c2-)"
+      - uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ steps.generate-version.outputs.ver }}
