@@ -122,29 +122,17 @@ jobs:
     name: "Build Image"
     runs-on: ubuntu-latest
     steps:
-      - id: generate-version
-        env: { github_ref: "${{github.ref_name }}" }
-        run: echo "::set-output name=ver::$(echo $github_ref | cut -c2-)"
+      - id: generate-image-tag
+        env: { github_ref: "${{ github.ref_name }}" }
+        run: >-
+          ref="${github_ref/main/latest}"
+          echo "::set-output name=imageTag::$(echo ${ref#v})"
       - uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: "Pull Request"
-        uses: docker/build-push-action@v2.7.0
-        if: github.event_name == 'pull_request'
+      - uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-      - name: "Main Branch"
-        uses: docker/build-push-action@v2.7.0
-        if: github.event_name == 'push' && contains(github.ref, '/heads/main')
-        with:
-          push: true
-          tags: ghcr.io/${{ github.repository }}:latest
-      - name: "Tag"
-        uses: docker/build-push-action@v2
-        if: github.event_name == 'push' && contains(github.ref, '/tags/v')
-        with:
-          push: true
-          tags: ghcr.io/${{ github.repository }}:${{ steps.generate-version.outputs.ver }}
+          tags: ghcr.io/${{ github.repository }}:${{ steps.generate-image-tag.outputs.imageTag }}
