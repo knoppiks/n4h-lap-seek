@@ -83,6 +83,10 @@ class BaseSerializer < SimpleBaseSerializer
     associated('Organism')
   end
 
+  def human_diseases
+    associated('HumanDisease')
+  end
+
   def self_link
     polymorphic_path(object)
   end

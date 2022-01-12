@@ -43,6 +43,11 @@ class Model < ApplicationRecord
       label_field: 'organisms.title',
       includes: [:organism]
   )
+  has_filter human_disease: Seek::Filtering::Filter.new(
+    value_field: 'human_diseases.id',
+    label_field: 'human_diseases.title',
+    includes: [:human_disease]
+  )
 
   has_filter  :model_type, :model_format, :recommended_environment
   has_filter modelling_analysis_type: Seek::Filtering::Filter.new(
@@ -101,6 +106,12 @@ class Model < ApplicationRecord
     else
       []
     end
+  end
+
+  # the api treats human diseases as plural, but we only want one.
+  # FIXME:ParameterConvert doesn't discriminate between Models, so couldn't handle it there
+  def human_disease_ids= ids
+    self.human_disease_id = ids.try(:first)
   end
 
   def human_disease_terms

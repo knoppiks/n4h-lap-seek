@@ -24,6 +24,7 @@ class ModelSerializer < ContributedResourceSerializer
   end
 
   has_many :organisms
+  has_many :human_diseases
   has_many :people
   has_many :projects
   has_many :investigations

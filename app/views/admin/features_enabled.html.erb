@@ -65,6 +65,14 @@
   <%= admin_checkbox_setting(:organisms_enabled, 1, Seek::Config.organisms_enabled,
                              "Organisms enabled", "Whether the users can register organisms in SEEK.") %>
 
+    <%= admin_checkbox_setting(:human_diseases_enabled, 1, Seek::Config.human_diseases_enabled,
+                             "#{t('human_disease').pluralize} enabled", "Whether the users can register #{t('human_disease').pluralize}.",
+                             :onchange=>toggle_appear_javascript('human_diseases_plot')) %>
+  <div id="human_diseases_plot" class="additional_settings" style="<%= show_or_hide_block Seek::Config.human_diseases_enabled -%>">
+    <%= admin_checkbox_setting(:human_diseases_plot_enabled, 1, Seek::Config.human_diseases_plot_enabled,
+                               "Show plot on the frontpage", "A sunburst plot will be displayed on the frontpage, which contains annotated #{t('human_disease').pluralize} and counts.") %>
+  </div>
+
   <%= admin_checkbox_setting(:publications_enabled, 1, Seek::Config.publications_enabled,
                              "Publications enabled", "Whether the users can register publications in SEEK.") %>
 
