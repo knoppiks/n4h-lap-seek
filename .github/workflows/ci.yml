@@ -5,6 +5,7 @@ on:
   push:
     branches: [ "main" ]
     tags: [ "*" ]
+
 jobs:
   tests:
     name: Test
@@ -132,6 +133,9 @@ jobs:
       - name: "Pull Request"
         uses: docker/build-push-action@v2.7.0
         if: github.event_name == 'pull_request'
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
       - name: "Main Branch"
         uses: docker/build-push-action@v2.7.0
         if: github.event_name == 'push' && contains(github.ref, '/heads/main')
